@@ -7,58 +7,88 @@ type Node struct {
 	next  *Node
 }
 
-func push(head *Node, v int) {
+type LinkedList struct {
+	length int
+	head   *Node
+}
+
+func (ll *LinkedList) push(v int) {
 	newNode := &Node{value: v}
-	if head.next == nil {
-		head.next = newNode
+
+	if ll.length == 0 {
+		ll.head = newNode
 	} else {
-		current := head
+		current := ll.head
 		for current.next != nil {
 			current = current.next
 		}
 		current.next = newNode
 	}
+	ll.length++
 }
 
-func showNodes(head *Node) {
-	current := head
-	i := 0
-	for current.next != nil {
-		fmt.Println(i, ":", current.value)
-		current = current.next
-		i++
-	}
-	fmt.Println(i, ":", current.value)
-}
-
-func insert(head *Node, v, p int) {
-	current := head
-	i := 0
-	for current.next != nil {
-		if i == p-1 {
-			// Found the position of the previous node.
-			// Change this one's next and if it had a next, use that in the new node's next.
-			// Also break out of the loop. No point in carrying on.
-			oldNext := current.next
-			newNode := &Node{value: v, next: oldNext}
-			current.next = newNode
-			break
+func (ll *LinkedList) output() {
+	if ll.length == 0 {
+		fmt.Println("LinkedList is empty!")
+	} else {
+		fmt.Println("Linked List. Length:", ll.length)
+		current := ll.head
+		i := 0
+		for current.next != nil {
+			fmt.Println(i, ":", current.value)
+			current = current.next
+			i++
 		}
-		current = current.next
-		i++
+		fmt.Println(i, ":", current.value)
+		fmt.Println("")
 	}
+}
 
+func (ll *LinkedList) insert(v, p int) {
+	if ll.length == p {
+		// The position to insert into is one after the end of the list, so it's a push
+		ll.push(v)
+		ll.length++
+	} else if p > ll.length {
+		// The position is outside of it's range. If this worked, it would create gaps.
+		// So don't allow this to happen
+		fmt.Println("ERROR: Cannot insert outside of linked list.")
+		// TODO: Should handle errors by returning an error instead of this.
+	} else {
+		if p == 0 {
+			// Insert before rest of list.
+			oldHead := ll.head
+			ll.head = &Node{value: v, next: oldHead}
+		} else {
+			current := ll.head
+			i := 0
+			for current.next != nil {
+				if i == p-1 {
+					// Found the position of the previous node.
+					// Change this one's next and if it had a next, use that in the new node's next.
+					// Also break out of the loop. No point in carrying on.
+					oldNext := current.next
+					current.next = &Node{value: v, next: oldNext}
+					break
+				}
+				current = current.next
+				i++
+			}
+		}
+		ll.length++
+	}
 }
 
 func main() {
-	head := Node{
-		value: 10,
+	ll := &LinkedList{}
+
+	for i := 0; i < 10; i++ {
+		ll.push(i * 10)
 	}
 
-	for i := 1; i < 10; i++ {
-		push(&head, i+10)
-	}
+	ll.output()
 
-	insert(&head, 20, 2)
-	showNodes(&head)
+	ll.insert(999, 0)
+
+	ll.output()
 }
