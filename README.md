@@ -18,3 +18,7 @@ Not bad for a first Go project? 🤞
  ❌ Remove items
 
  ❌ Reverse list
+
+ ❌ Sort list
+ 
+ ❌ Proper error handling
