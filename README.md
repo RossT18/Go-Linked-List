@@ -7,7 +7,7 @@ Not bad for a first Go project? 🤞
 ## Goals:
  ✔ Push items
  
- ❌ Pop items
+ ✔ Pop items
  
  ✔ Output linked list
  
@@ -16,3 +16,5 @@ Not bad for a first Go project? 🤞
  ✔ Insert items
  
  ❌ Remove items
+
+ ❌ Reverse list

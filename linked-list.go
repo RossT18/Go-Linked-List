@@ -27,6 +27,29 @@ func (ll *LinkedList) push(v int) {
 	ll.length++
 }
 
+func (ll *LinkedList) pop() int {
+	if ll.length == 0 {
+		fmt.Println("ERROR: Cannot pop off of an empty list.") //Actually handle this
+		return -1
+	} else if ll.length == 1 {
+		headVal := ll.head.value
+		ll.head = nil
+		ll.length--
+		return headVal
+	} else {
+		var previous *Node = nil
+		current := ll.head
+		for current.next != nil {
+			previous = current
+			current = current.next
+		}
+		val := current.value
+		previous.next = nil
+		ll.length--
+		return val
+	}
+}
+
 func (ll *LinkedList) output() {
 	if ll.length == 0 {
 		fmt.Println("LinkedList is empty!")
@@ -113,13 +136,4 @@ func main() {
 	}
 
 	ll.output()
-
-	ll.insert(999, 0)
-
-	ll.output()
-
-	ll.find(999)
-	fmt.Println("40 at", ll.find(40))
-	ll.find(90)
-	ll.find(123)
 }
