@@ -17,7 +17,7 @@ Not bad for a first Go project? 🤞
  
  ❌ Remove items
 
- ❌ Reverse list
+ ✔ Reverse list
 
  ❌ Sort list
  
