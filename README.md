@@ -5,12 +5,14 @@ Not bad for a first Go project? 🤞
 
 
 ## Goals:
- ✔ Add items to the end of the list
+ ✔ Push items
  
- ✔ Output the entire list
+ ❌ Pop items
  
- ✔ Insert item in a position
+ ✔ Output linked list
  
- ❌ Remove item in a position
+ ✔ Search for items in the list
  
- ❌ Search for an item
+ ✔ Insert items
+ 
+ ❌ Remove items
