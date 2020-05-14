@@ -128,6 +128,15 @@ func (ll *LinkedList) find(v int) int {
 	}
 }
 
+func (ll *LinkedList) reverse() *LinkedList {
+	llReversed := &LinkedList{}
+	originalLength := ll.length
+	for i := 0; i < originalLength; i++ {
+		llReversed.push(ll.pop())
+	}
+	return llReversed
+}
+
 func main() {
 	ll := &LinkedList{}
 
@@ -136,4 +145,8 @@ func main() {
 	}
 
 	ll.output()
+
+	llR := ll.reverse()
+
+	llR.output()
 }
