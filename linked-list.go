@@ -79,6 +79,32 @@ func (ll *LinkedList) insert(v, p int) {
 	}
 }
 
+func (ll *LinkedList) find(v int) int {
+	if ll.length == 0 {
+		fmt.Println("ERROR: LinkedList is empty")
+		return -1
+	} else {
+		current := ll.head
+		i := 0
+		for current.next != nil {
+			if current.value == v {
+				fmt.Println(v, "found at", i)
+				return i
+			}
+			current = current.next
+			i++
+		}
+		if current.value == v {
+			// Have to check the last element too
+			fmt.Println(v, "found at", i)
+			return i
+		} else {
+			fmt.Println("LinkedList does not contain", v)
+			return -1
+		}
+	}
+}
+
 func main() {
 	ll := &LinkedList{}
 
@@ -91,4 +117,9 @@ func main() {
 	ll.insert(999, 0)
 
 	ll.output()
+
+	ll.find(999)
+	fmt.Println("40 at", ll.find(40))
+	ll.find(90)
+	ll.find(123)
 }
