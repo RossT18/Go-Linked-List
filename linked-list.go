@@ -67,6 +67,30 @@ func (ll *LinkedList) output() {
 	}
 }
 
+func (ll *LinkedList) find(v int) int {
+	if ll.length == 0 {
+		fmt.Println("ERROR: LinkedList is empty")
+		return -1
+	} else {
+		current := ll.head
+		i := 0
+		for current.next != nil {
+			if current.value == v {
+				return i
+			}
+			current = current.next
+			i++
+		}
+		if current.value == v {
+			// Have to check the last element too
+			return i
+		} else {
+			// value is not in the list
+			return -1
+		}
+	}
+}
+
 func (ll *LinkedList) insert(v, p int) {
 	if ll.length == p {
 		// The position to insert into is one after the end of the list, so it's a push
@@ -153,29 +177,14 @@ func (ll *LinkedList) removeAt(p int) int {
 	}
 }
 
-func (ll *LinkedList) find(v int) int {
-	if ll.length == 0 {
-		fmt.Println("ERROR: LinkedList is empty")
-		return -1
+func (ll *LinkedList) remove(v int) int {
+	searchResult := ll.find(v)
+	if searchResult > -1 {
+		// This means it exists in the linked list
+		return ll.removeAt(searchResult)
 	} else {
-		current := ll.head
-		i := 0
-		for current.next != nil {
-			if current.value == v {
-				fmt.Println(v, "found at", i)
-				return i
-			}
-			current = current.next
-			i++
-		}
-		if current.value == v {
-			// Have to check the last element too
-			fmt.Println(v, "found at", i)
-			return i
-		} else {
-			fmt.Println("LinkedList does not contain", v)
-			return -1
-		}
+		fmt.Println("ERROR: Value", v, "cannot be removed. It is not present")
+		return -1
 	}
 }
 
@@ -197,11 +206,11 @@ func main() {
 
 	ll.output()
 
+	ll.remove(0)
+	ll.remove(40)
+	ll.remove(60)
+	ll.remove(2)
 	ll.removeAt(0)
-	ll.removeAt(1)
-	ll.removeAt(2)
-	ll.removeAt(3)
-	ll.removeAt(4)
 
 	ll.output()
 }

@@ -1,5 +1,7 @@
 # Go-Linked-List
-This is just a very simple implementation of a Linked-List.
+A simple implementation of a Linked-List.
+
+This project is just for learning Go.
 
 Not bad for a first Go project? 🤞
 
@@ -17,7 +19,7 @@ Not bad for a first Go project? 🤞
  
  ✔ Remove items at position
 
- ❌ Remove items given a value
+ ✔ Remove items given a value
 
  ✔ Reverse list
 
