@@ -57,12 +57,11 @@ func (ll *LinkedList) output() {
 		fmt.Println("Linked List. Length:", ll.length)
 		current := ll.head
 		i := 0
-		for current.next != nil {
+		for current != nil {
 			fmt.Println(i, ":", current.value)
 			current = current.next
 			i++
 		}
-		fmt.Println(i, ":", current.value)
 		fmt.Println("")
 	}
 }
@@ -188,29 +187,28 @@ func (ll *LinkedList) remove(v int) int {
 	}
 }
 
-func (ll *LinkedList) reverse() *LinkedList {
+func (ll *LinkedList) reverse() {
 	llReversed := &LinkedList{}
 	originalLength := ll.length
 	for i := 0; i < originalLength; i++ {
 		llReversed.push(ll.pop())
 	}
-	return llReversed
+
+	current := llReversed.head
+	for current != nil {
+		ll.push(current.value)
+		current = current.next
+	}
 }
 
 func main() {
 	ll := &LinkedList{}
 
-	for i := 0; i < 10; i++ {
+	for i := 9; i >= 0; i-- {
 		ll.push(i * 10)
 	}
 
 	ll.output()
-
-	ll.remove(0)
-	ll.remove(40)
-	ll.remove(60)
-	ll.remove(2)
-	ll.removeAt(0)
-
+	ll.reverse()
 	ll.output()
 }
