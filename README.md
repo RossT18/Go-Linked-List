@@ -15,7 +15,9 @@ Not bad for a first Go project? 🤞
  
  ✔ Insert items
  
- ❌ Remove items
+ ✔ Remove items at position
+
+ ❌ Remove items given a value
 
  ✔ Reverse list
 

@@ -102,6 +102,57 @@ func (ll *LinkedList) insert(v, p int) {
 	}
 }
 
+func (ll *LinkedList) removeAt(p int) int {
+	// TODO: Make switch-case
+	if ll.length == 0 {
+
+		fmt.Println("ERROR: Cannot remove from empty list")
+		return -1
+
+	} else if p >= ll.length || p < 0 {
+
+		// This is out of range of the list.
+		// If the length is 10, the maximum P is 9, as this is the 10th element
+		fmt.Println("ERROR: Cannot remove from outside the list")
+		return -1
+
+	} else if p == ll.length-1 {
+
+		// Last item was selected
+		return ll.pop()
+
+	} else if p == 0 {
+
+		// Need to remove head and make second element, if any, the head
+		// No need to check if head has any nodes. It must, or else the condition above (p == ll.length-1) will be true
+		headVal := ll.head.value
+		ll.head = ll.head.next
+		ll.length--
+		return headVal
+
+	} else {
+		// Need to remove an item from the middle.
+		var removedVal int
+		var previous *Node = nil
+		current := ll.head
+		i := 0
+		for current.next != nil {
+			if i == p {
+				// Current is now the node to be removed
+				removedVal = current.value
+				previous.next = current.next
+			}
+			previous = current
+			current = current.next
+			i++
+		}
+		// It won't be the last value, as that's already checked for and popped above
+		ll.length--
+		return removedVal
+
+	}
+}
+
 func (ll *LinkedList) find(v int) int {
 	if ll.length == 0 {
 		fmt.Println("ERROR: LinkedList is empty")
@@ -146,7 +197,11 @@ func main() {
 
 	ll.output()
 
-	llR := ll.reverse()
+	ll.removeAt(0)
+	ll.removeAt(1)
+	ll.removeAt(2)
+	ll.removeAt(3)
+	ll.removeAt(4)
 
-	llR.output()
+	ll.output()
 }
