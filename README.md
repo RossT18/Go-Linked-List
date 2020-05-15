@@ -23,6 +23,8 @@ Not bad for a first Go project? 🤞
 
  ✔ Reverse list
 
- ❌ Sort list
+ ✔ Sort list
+
+ ❌ Swap items
  
  ❌ Proper error handling

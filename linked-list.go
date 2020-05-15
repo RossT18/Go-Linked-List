@@ -201,14 +201,82 @@ func (ll *LinkedList) reverse() {
 	}
 }
 
+func (ll *LinkedList) clear() {
+	ll.head = nil
+	ll.length = 0
+}
+
+func (ll *LinkedList) sortAdd(v int) {
+	if ll.length == 0 {
+		// LinkedList is empty, so can just set this value to the head of the list.
+		ll.head = &Node{value: v, next: nil}
+	} else {
+		var previous *Node = nil
+		current := ll.head
+		for current != nil {
+			if current.value < v {
+				// The current val in the ll is smaller, so should look at next one
+				if current.next == nil {
+					// There is no next one, so add to end
+					newNode := &Node{value: v, next: nil}
+					current.next = newNode
+					break
+				} else {
+					// More list to go through, keep checking.
+					previous = current
+					current = current.next
+				}
+			} else {
+				// Current val is bigger or same as value. Should insert just before this node
+				if previous == nil {
+					// Must mean the head has a bigger val than what needs to be inserted
+					newNode := &Node{value: v, next: ll.head}
+					ll.head = newNode
+				} else {
+					newNode := &Node{value: v, next: current}
+					previous.next = newNode
+				}
+				break //Exit the loop. We have inserted
+			}
+		}
+	}
+	ll.length++
+}
+
+func (ll *LinkedList) sort() {
+	sorted := &LinkedList{}
+
+	current := ll.head
+	for current != nil {
+		sorted.sortAdd(current.value)
+		current = current.next
+	}
+
+	ll.clear()
+
+	newCurrent := sorted.head
+	for newCurrent != nil {
+		ll.push(newCurrent.value)
+		newCurrent = newCurrent.next
+	}
+}
+
 func main() {
 	ll := &LinkedList{}
 
-	for i := 9; i >= 0; i-- {
+	for i := 0; i < 10; i++ {
 		ll.push(i * 10)
 	}
 
+	ll.push(-1)
+	ll.push(400)
+	ll.push(300)
+	ll.push(45)
+	ll.push(30)
+
 	ll.output()
-	ll.reverse()
+
+	ll.sort()
+
 	ll.output()
 }
