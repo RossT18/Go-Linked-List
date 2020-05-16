@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Node struct {
 	value int
@@ -27,15 +30,14 @@ func (ll *LinkedList) push(v int) {
 	ll.length++
 }
 
-func (ll *LinkedList) pop() int {
+func (ll *LinkedList) pop() (int, error) {
 	if ll.length == 0 {
-		fmt.Println("ERROR: Cannot pop off of an empty list.") //Actually handle this
-		return -1
+		return -1, errors.New("Cannot pop off of an empty linked list.")
 	} else if ll.length == 1 {
 		headVal := ll.head.value
 		ll.head = nil
 		ll.length--
-		return headVal
+		return headVal, nil
 	} else {
 		var previous *Node = nil
 		current := ll.head
@@ -46,7 +48,7 @@ func (ll *LinkedList) pop() int {
 		val := current.value
 		previous.next = nil
 		ll.length--
-		return val
+		return val, nil
 	}
 }
 
@@ -66,31 +68,30 @@ func (ll *LinkedList) output() {
 	}
 }
 
-func (ll *LinkedList) find(v int) int {
+func (ll *LinkedList) find(v int) (int, error) {
 	if ll.length == 0 {
-		fmt.Println("ERROR: LinkedList is empty")
-		return -1
+		return -1, errors.New("Linked list is empty.")
 	} else {
 		current := ll.head
 		i := 0
 		for current.next != nil {
 			if current.value == v {
-				return i
+				return i, nil
 			}
 			current = current.next
 			i++
 		}
 		if current.value == v {
 			// Have to check the last element too
-			return i
+			return i, nil
 		} else {
 			// value is not in the list
-			return -1
+			return -1, nil
 		}
 	}
 }
 
-func (ll *LinkedList) insert(v, p int) {
+func (ll *LinkedList) insert(v, p int) error {
 	if ll.length == p {
 		// The position to insert into is one after the end of the list, so it's a push
 		ll.push(v)
@@ -98,8 +99,7 @@ func (ll *LinkedList) insert(v, p int) {
 	} else if p > ll.length {
 		// The position is outside of it's range. If this worked, it would create gaps.
 		// So don't allow this to happen
-		fmt.Println("ERROR: Cannot insert outside of linked list.")
-		// TODO: Should handle errors by returning an error instead of this.
+		return errors.New("Cannot insert outside of linked list.")
 	} else {
 		if p == 0 {
 			// Insert before rest of list.
@@ -123,26 +123,26 @@ func (ll *LinkedList) insert(v, p int) {
 		}
 		ll.length++
 	}
+	return nil
 }
 
-func (ll *LinkedList) removeAt(p int) int {
+func (ll *LinkedList) removeAt(p int) (int, error) {
 	// TODO: Make switch-case
 	if ll.length == 0 {
 
-		fmt.Println("ERROR: Cannot remove from empty list")
-		return -1
+		return -1, errors.New("Cannot remove from an empty linked list.")
 
 	} else if p >= ll.length || p < 0 {
 
 		// This is out of range of the list.
 		// If the length is 10, the maximum P is 9, as this is the 10th element
-		fmt.Println("ERROR: Cannot remove from outside the list")
-		return -1
+		return -1, errors.New("Cannot remove from outside of the linked list.")
 
 	} else if p == ll.length-1 {
 
 		// Last item was selected
-		return ll.pop()
+		poppedVal, err := ll.pop()
+		return poppedVal, err
 
 	} else if p == 0 {
 
@@ -151,7 +151,7 @@ func (ll *LinkedList) removeAt(p int) int {
 		headVal := ll.head.value
 		ll.head = ll.head.next
 		ll.length--
-		return headVal
+		return headVal, nil
 
 	} else {
 		// Need to remove an item from the middle.
@@ -171,27 +171,38 @@ func (ll *LinkedList) removeAt(p int) int {
 		}
 		// It won't be the last value, as that's already checked for and popped above
 		ll.length--
-		return removedVal
-
+		return removedVal, nil
 	}
 }
 
-func (ll *LinkedList) remove(v int) int {
-	searchResult := ll.find(v)
+func (ll *LinkedList) remove(v int) (int, error) {
+	searchResult, err := ll.find(v)
+	if err != nil {
+		return -1, err
+	}
 	if searchResult > -1 {
 		// This means it exists in the linked list
-		return ll.removeAt(searchResult)
+		removeAt, err := ll.removeAt(searchResult)
+		if err != nil {
+			return -1, err
+		} else {
+			return removeAt, nil
+		}
 	} else {
-		fmt.Println("ERROR: Value", v, "cannot be removed. It is not present")
-		return -1
+		return -1, errors.New("Value is not present in the linked list.")
 	}
 }
 
-func (ll *LinkedList) reverse() {
+func (ll *LinkedList) reverse() error {
 	llReversed := &LinkedList{}
 	originalLength := ll.length
 	for i := 0; i < originalLength; i++ {
-		llReversed.push(ll.pop())
+		last, err := ll.pop()
+		if err != nil {
+			return err
+		} else {
+			llReversed.push(last)
+		}
 	}
 
 	current := llReversed.head
@@ -199,6 +210,7 @@ func (ll *LinkedList) reverse() {
 		ll.push(current.value)
 		current = current.next
 	}
+	return nil
 }
 
 func (ll *LinkedList) clear() {
@@ -267,16 +279,6 @@ func main() {
 	for i := 0; i < 10; i++ {
 		ll.push(i * 10)
 	}
-
-	ll.push(-1)
-	ll.push(400)
-	ll.push(300)
-	ll.push(45)
-	ll.push(30)
-
-	ll.output()
-
-	ll.sort()
 
 	ll.output()
 }
