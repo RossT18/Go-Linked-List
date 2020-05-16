@@ -6,7 +6,7 @@ This project is just for learning Go.
 Not bad for a first Go project? 🤞
 
 
-## Goals:
+## ~~Goals~~ Features:
  ✔ Push items
  
  ✔ Pop items
